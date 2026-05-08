@@ -4,23 +4,34 @@
     <meta charset="UTF-8">
     <title>Acesso - Gestão de Pátio</title>
     <style>
-        /* DESIGN NEON EQUILIBRADO E FONTES HARMONIZADAS */
-        body { margin: 0; font-family: 'Consolas', 'Courier New', monospace; background-color: #07090f; display: flex; justify-content: center; align-items: center; height: 100vh; color: #00f0ff; }
-        .caixa-login { background: #0b101a; padding: 40px; border-radius: 12px; box-shadow: 0 0 25px rgba(0, 240, 255, 0.05); width: 350px; text-align: center; border: 1px solid rgba(0, 240, 255, 0.2); position: relative; overflow: hidden;}
-        .caixa-login::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: #00f0ff; box-shadow: 0 0 15px #00f0ff; }
-        .logo-icon { font-size: 35px; margin-bottom: 10px; color: #00f0ff; text-shadow: 0 0 15px rgba(0, 240, 255, 0.5); }
+        /* DESIGN NEON EQUILIBRADO E TEMA SHOPEE XPRESS (LARANJA) */
+        body { margin: 0; font-family: 'Consolas', 'Courier New', monospace; background-color: #07090f; display: flex; justify-content: center; align-items: center; height: 100vh; color: #ee4d2d; }
+        .caixa-login { background: #0b101a; padding: 40px; border-radius: 12px; box-shadow: 0 0 25px rgba(238, 77, 45, 0.05); width: 350px; text-align: center; border: 1px solid rgba(238, 77, 45, 0.2); position: relative; overflow: hidden;}
+        .caixa-login::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: #ee4d2d; box-shadow: 0 0 15px #ee4d2d; }
        
-        h2 { margin: 0 0 25px 0; color: #fff; font-weight: 600; font-size: 22px; font-family: 'Segoe UI', sans-serif; letter-spacing: 2px; text-shadow: 0 0 10px rgba(0, 240, 255, 0.3); text-transform: uppercase;}
+        /* O ESPAÇO RESERVADO PARA A LOGO (+70% DE ZOOM) */
+        .logo-shopee {
+            width: 100%;
+            height: 60px;
+            margin: 20px auto 60px auto; /* Margem inferior bem maior para compensar o zoom extremo */
+            background-image: url('https://i.imgur.com/Z0lEejO.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            transform: scale(4.0); /* Escala aumentada drasticamente */
+        }
        
-        input, select { width: 100%; padding: 14px; margin: 10px 0; background: rgba(0,0,0,0.6); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 6px; box-sizing: border-box; font-size: 15px; color: #fff; outline: none; transition: all 0.3s ease; font-family: inherit;}
+        h2 { margin: 0 0 25px 0; color: #fff; font-weight: 600; font-size: 14px; font-family: 'Segoe UI', sans-serif; letter-spacing: 2px; text-shadow: 0 0 10px rgba(238, 77, 45, 0.3); text-transform: uppercase;}
+       
+        input, select { width: 100%; padding: 14px; margin: 10px 0; background: rgba(0,0,0,0.6); border: 1px solid rgba(238, 77, 45, 0.3); border-radius: 6px; box-sizing: border-box; font-size: 15px; color: #fff; outline: none; transition: all 0.3s ease; font-family: inherit;}
         input::placeholder { color: #4a5568; }
-        input:focus, select:focus { border-color: #00f0ff; box-shadow: 0 0 12px rgba(0, 240, 255, 0.2); background: rgba(0, 240, 255, 0.02); }
+        input:focus, select:focus { border-color: #ee4d2d; box-shadow: 0 0 12px rgba(238, 77, 45, 0.2); background: rgba(238, 77, 45, 0.02); }
        
-        select { font-weight: bold; text-transform: uppercase; color: #38bdf8; text-align: center;}
+        select { font-weight: bold; text-transform: uppercase; color: #ee4d2d; text-align: center;}
         option { background: #0b101a; color: #fff; }
 
-        .btn { width: 100%; padding: 14px; background: rgba(0, 240, 255, 0.1); color: #00f0ff; border: 1px solid #00f0ff; border-radius: 6px; font-family: 'Segoe UI', sans-serif; font-size: 15px; cursor: pointer; font-weight: bold; margin-top: 20px; transition: all 0.2s; letter-spacing: 1px; text-transform: uppercase;}
-        .btn:hover { background: #00f0ff; color: #000; box-shadow: 0 0 15px rgba(0, 240, 255, 0.6); }
+        .btn { width: 100%; padding: 14px; background: rgba(238, 77, 45, 0.1); color: #ee4d2d; border: 1px solid #ee4d2d; border-radius: 6px; font-family: 'Segoe UI', sans-serif; font-size: 15px; cursor: pointer; font-weight: bold; margin-top: 20px; transition: all 0.2s; letter-spacing: 1px; text-transform: uppercase;}
+        .btn:hover { background: #ee4d2d; color: #fff; box-shadow: 0 0 15px rgba(238, 77, 45, 0.6); }
     </style>
    
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -36,7 +47,8 @@
 
     <div class="caixa-login">
         <div id="formLogin">
-            <div class="logo-icon">💠</div>
+            <div class="logo-shopee"></div>
+           
             <h2 id="statusNuvem" style="color: #f1c40f;">CONECTANDO...</h2>
            
             <select id="lugarLogin">
@@ -50,58 +62,27 @@
     </div>
 
     <script>
-        const TOTAL_DE_MESAS = 20;
+        const TOTAL_DE_MESAS = 15;
 
         // ==========================================
-        // CONFIGURAÇÃO ANTIGA (UBERABA) - SALVA AQUI
-        // ==========================================
-        /*
-        const firebaseConfigUberaba = {
-            apiKey: "AIzaSyDFQPqoRF6BZm76yAioqhaoOzf8aSjijyU",
-            authDomain: "gestao-de-doca.firebaseapp.com",
-            databaseURL: "https://gestao-de-doca-default-rtdb.firebaseio.com",
-            projectId: "gestao-de-doca",
-            storageBucket: "gestao-de-doca.firebasestorage.app",
-            messagingSenderId: "574246315988",
-            appId: "1:574246315988:web:eacaaef9a2fc82393e9841",
-            measurementId: "G-QWJNRFZBX5"
-        };
-        */
-
-        // ==========================================
-        // CONFIGURAÇÃO ANTIGA (UBERLÂNDIA) - SALVA AQUI
-        // ==========================================
-        /*
-        const firebaseConfigUberlandia = {
-            apiKey: "AIzaSyDDk9scpOgG9mDTcw5kzWsPzHOo5roEiPM",
-            authDomain: "fila-driver-44.firebaseapp.com",
-            databaseURL: "https://fila-driver-44-default-rtdb.firebaseio.com",
-            projectId: "fila-driver-44",
-            storageBucket: "fila-driver-44.firebasestorage.app",
-            messagingSenderId: "393060281340",
-            appId: "1:393060281340:web:9e4c84e1f7b6ef200aa079",
-            measurementId: "G-69ZXHCZX3R"
-        };
-        */
-
-        // ==========================================
-        // NOVA CONFIGURAÇÃO (PATOS - ATIVA)
+        // NOVA CONFIGURAÇÃO (DIVINÓPOLIS - ATIVA)
         // ==========================================
         const firebaseConfig = {
-            apiKey: "AIzaSyAWpR4ZxsGEXL9MjVeEtw0C25BcNviebiw",
-            authDomain: "fila-afc58.firebaseapp.com",
-            databaseURL: "https://fila-afc58-default-rtdb.firebaseio.com",
-            projectId: "fila-afc58",
-            storageBucket: "fila-afc58.firebasestorage.app",
-            messagingSenderId: "374884851969",
-            appId: "1:374884851969:web:72db7ba26354b2a1febb00",
-            measurementId: "G-VK315V54SC"
+            apiKey: "AIzaSyD5x5FCQj3CsNGOjAs-RfgA4ZHzFbUcrA0",
+            authDomain: "filadriver.firebaseapp.com",
+            databaseURL: "https://filadriver-default-rtdb.firebaseio.com",
+            projectId: "filadriver",
+            storageBucket: "filadriver.firebasestorage.app",
+            messagingSenderId: "91440295084",
+            appId: "1:91440295084:web:57104a472c60365dc84309",
+            measurementId: "G-WS5GB1LENK"
         };
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
         let mesasOcupadas = [];
+        let mesasCarregadas = false;
 
         db.ref('.info/connected').on('value', function(connectedSnap) {
             if (connectedSnap.val() === true) {
@@ -114,7 +95,19 @@
         db.ref('mesasOcupadas').on('value', (snapshot) => {
             mesasOcupadas = snapshot.val() || [];
             carregarMesasLivres();
+            mesasCarregadas = true;
+        }, (error) => {
+            console.warn("Regras do Firebase podem estar bloqueadas. Forçando exibição.", error);
+            carregarMesasLivres();
+            mesasCarregadas = true;
         });
+
+        setTimeout(() => {
+            if(!mesasCarregadas) {
+                console.warn("Firebase demorou a responder. Forçando carregamento das mesas.");
+                carregarMesasLivres();
+            }
+        }, 3000);
 
         function carregarMesasLivres() {
             const selectLugar = document.getElementById('lugarLogin');
@@ -128,6 +121,23 @@
             selectLugar.appendChild(optionAdmin);
            
             let temMesaLivre = false;
+
+            if(!mesasOcupadas.includes('Final de Fila 1')) {
+                let optionFF1 = document.createElement('option');
+                optionFF1.value = 'Final de Fila 1';
+                optionFF1.text = '🚨 FINAL DE FILA 1';
+                selectLugar.appendChild(optionFF1);
+                temMesaLivre = true;
+            }
+
+            if(!mesasOcupadas.includes('Final de Fila 2')) {
+                let optionFF2 = document.createElement('option');
+                optionFF2.value = 'Final de Fila 2';
+                optionFF2.text = '🚨 FINAL DE FILA 2';
+                selectLugar.appendChild(optionFF2);
+                temMesaLivre = true;
+            }
+
             for(let i = 1; i <= TOTAL_DE_MESAS; i++) {
                 let nomeMesa = 'Mesa ' + i;
                 if(!mesasOcupadas.includes(nomeMesa)) {
@@ -166,12 +176,14 @@
                 db.ref('mesasOcupadas').once('value').then((snapshot) => {
                     let atuais = snapshot.val() || [];
                     if(atuais.includes(lugar)) {
-                        return alert("Esta mesa acabou de ser acessada por outro operador. Escolha outra.");
+                        return alert("Este acesso já está em uso por outro operador. Escolha outro.");
                     }
                     atuais.push(lugar);
                     db.ref('mesasOcupadas').set(atuais).then(() => {
                         logarComo(lugar.toUpperCase(), 'operador', lugar);
                     });
+                }).catch(() => {
+                    logarComo(lugar.toUpperCase(), 'operador', lugar);
                 });
             } else {
                 alert("Acesso Negado: Senha da Mesa incorreta!");
