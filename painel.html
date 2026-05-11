@@ -457,7 +457,10 @@
                         if(!colunas || colunas.length === 0) continue;
 
                         let nome = String(colunas[0] || "").trim().toUpperCase();
-                        let id = String(colunas[1] || "").trim().toUpperCase();
+                        let id = String(colunas[1] || "")
+    .replace(/\s/g, '')
+    .trim()
+    .toUpperCase();
                         let rota = String(colunas[2] || "").trim().toUpperCase();
 
                         if(id && id !== 'ID' && !dbTemp.find(v => v.id === id)) {
